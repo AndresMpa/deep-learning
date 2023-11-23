@@ -2,6 +2,8 @@
 
 Es un tipo de operación que disminuye la dimensionalidad del tensor de entrada, lo que garantiza esto es que el modelo no sea sensible a cambios en la entrada, por ejemplo tomando los valores maximos
 
+Para extraer data basicamente
+
 ## Convolución transpuesta (Desconvolución)
 
 Esto es similar a descargar un archivo .part se tiene la data pero desordenada y esta se recostruye de una forma un poco diferente no será necesariamente igual pero si parecido, esto es como ir hacia atras en donde la convolución es ir hacia adelante
