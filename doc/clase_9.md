@@ -15,3 +15,5 @@ Los pooling que usa este modelo sirven para identificar caracteristicas más no 
 - Número de operaciones matematicas
 - Número de capas convolucionadas
 - Número de parametros
+
+> Torch y TensorFlow opera sobre redes neuronales; esto implica que para usar cosas como modelos de Markov, SVM, etc; no se puede usar Torch
