@@ -144,3 +144,6 @@ if __name__ == '__main__':
     plt.xlabel("Epochs")
     plt.ylabel("Loss function")
     plt.show()
+
+    # Graba un modelo entrenado
+    torch.save(architecture.state_dict(), 'architecture_cifar10.pth')
