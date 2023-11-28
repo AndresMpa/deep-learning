@@ -1,5 +1,15 @@
-``` bash
-python -m venv vgg_architecture
-vgg_architecture\Scripts\activate
-pip install -r requirements.txt
+## Windows
+
+```bath
+python -m venv env
+env\Scripts\activate
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+```
+
+## Linux
+
+```bash
+python -m venv env
+source env/bin/activate
+pip3 install torch torchvision torchaudio
 ```
