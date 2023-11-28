@@ -55,16 +55,14 @@ if __name__ == '__main__':
     '''
     Se trae el dataset
     '''
-    # Path de descarga
-    data_path = "./data"
 
     # Descargar y cargar el conjunto de datos CIFAR-10
 
     # ~5200 datos
     trainset = torchvision.datasets.CIFAR10(
-        root=data_path, train=True, download=os.path.isdir(data_path), transform=transform)
+        root=data_path, train=True, download=(not os.path.isdir(data_path)), transform=transform)
     testset = torchvision.datasets.CIFAR10(
-        root=data_path, train=False, download=os.path.isdir(data_path), transform=transform)
+        root=data_path, train=False, download=(not os.path.isdir(data_path)), transform=transform)
 
     # ~900 datos
     trainloader = torch.utils.data.DataLoader(
@@ -113,7 +111,7 @@ if __name__ == '__main__':
 
             if (j % 200 == 0):
                 print('[{} {:5d} {:.3f}]'.format(
-                    epochs, j+1, iteration_lost / 200))
+                    epochs, j, iteration_lost / 200))
                 error.append(iteration_lost)
                 iteration_lost = 0
 
