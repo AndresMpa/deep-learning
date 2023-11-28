@@ -11,12 +11,15 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
+import time
+
 import os
 
 from architectures.vgg_16 import VGG16
 
 
 if __name__ == '__main__':
+    start_time = time.time()
     multiprocessing.freeze_support()
 
     # Crear una instancia de VGG16
@@ -57,6 +60,7 @@ if __name__ == '__main__':
     '''
 
     # Descargar y cargar el conjunto de datos CIFAR-10
+    data_path="./data"
 
     # ~5200 datos
     trainset = torchvision.datasets.CIFAR10(
@@ -115,6 +119,15 @@ if __name__ == '__main__':
                 error.append(iteration_lost)
                 iteration_lost = 0
 
+    end_time = time.time()
+
+    elapsed_time = end_time - start_time
+
+    print(f"Took: {elapsed_time / 60.0:0.2f} minutes (Processing on GPU)")
+
+    # Move the model back to the CPU
+    architecture.to("cpu")
+
     '''
     Visualization
     '''
@@ -132,16 +145,28 @@ if __name__ == '__main__':
     # Se visualizan las activaciones
     plt.figure(figsize=(12, 4))
     for i in range(64):
-        plt.subplot(4, 16, i)
+        plt.subplot(4, 16, i + 1)
         plt.imshow(activation_normalized[i, :, :], cmap="viridis")
         plt.axis("off")
-    plt.show()
+    
+    # To save figure as a picture
+    plt.savefig('activations.png')
+
+    '''
+    Loss Function Plot
+    '''
+    
+    # Move the error to the CPU before plotting
+    error_cpu = [e.cpu().item() for e in error]
 
     # Se visualiza la función de perdida
-    plt.plot(np.arange(1, len(np.array(error)) + 1, 1), np.array(error))
+    plt.plot(np.arange(1, len(error_cpu) + 1, 1), np.array(error_cpu)) 
     plt.xlabel("Epochs")
     plt.ylabel("Loss function")
-    plt.show()
+    plt.title("Loss through epochs")
+
+    # To save figure as a picture
+    plt.savefig('loss_functions.png')
 
     # Graba un modelo entrenado
     torch.save(architecture.state_dict(), 'architecture_cifar10.pth')
