@@ -60,7 +60,7 @@ if __name__ == '__main__':
     '''
 
     # Descargar y cargar el conjunto de datos CIFAR-10
-    data_path="./data"
+    data_path = "./data"
 
     # ~5200 datos
     trainset = torchvision.datasets.CIFAR10(
@@ -139,28 +139,30 @@ if __name__ == '__main__':
 
     # Se normaliza la activación (Atenua pixeles para que no tenga mucho brillo)
     activation = activation[index, :, :, :].cpu().numpy()
+
     activation_normalized = (activation - activation.min()) / \
         (activation.max() - activation.min())
 
     # Se visualizan las activaciones
     plt.figure(figsize=(12, 4))
+
     for i in range(64):
         plt.subplot(4, 16, i + 1)
         plt.imshow(activation_normalized[i, :, :], cmap="viridis")
         plt.axis("off")
-    
+
     # To save figure as a picture
     plt.savefig('./results/activations.png')
 
     '''
     Loss Function Plot
     '''
-    
+
     # Move the error to the CPU before plotting
     error_cpu = [e.cpu().item() for e in error]
 
     # Se visualiza la función de perdida
-    plt.plot(np.arange(1, len(error_cpu) + 1, 1), np.array(error_cpu)) 
+    plt.plot(np.arange(1, len(error_cpu) + 1, 1), np.array(error_cpu))
     plt.xlabel("Epochs")
     plt.ylabel("Loss function")
     plt.title("Loss through epochs")
