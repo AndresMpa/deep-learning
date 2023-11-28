@@ -150,7 +150,7 @@ if __name__ == '__main__':
         plt.axis("off")
     
     # To save figure as a picture
-    plt.savefig('activations.png')
+    plt.savefig('./results/activations.png')
 
     '''
     Loss Function Plot
@@ -166,7 +166,7 @@ if __name__ == '__main__':
     plt.title("Loss through epochs")
 
     # To save figure as a picture
-    plt.savefig('loss_functions.png')
+    plt.savefig('./results/loss_functions.png')
 
     # Graba un modelo entrenado
-    torch.save(architecture.state_dict(), 'architecture_cifar10.pth')
+    torch.save(architecture.state_dict(), './results/architecture_cifar10.pth')
