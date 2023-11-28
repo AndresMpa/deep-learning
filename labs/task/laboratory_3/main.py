@@ -125,7 +125,7 @@ if __name__ == '__main__':
     index = 0
 
     # Se normaliza la activación (Atenua pixeles para que no tenga mucho brillo)
-    activation = activation[index, :, :, :].numpy()
+    activation = activation[index, :, :, :].cpu().numpy()
     activation_normalized = (activation - activation.min()) / \
         (activation.max() - activation.min())
 
