@@ -7,7 +7,7 @@ import torchvision.transforms as transforms
 
 import multiprocessing
 
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 import numpy as np
 
