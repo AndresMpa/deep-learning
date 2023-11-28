@@ -120,9 +120,6 @@ if __name__ == '__main__':
     '''
     Visualization
     '''
-    # Se regresa el tenso a la CPU para su analisis    
-    architecture.to("cpu")
-
     # Registra el gancho en la capa de interés
     activation = activations["conv1"]
 
@@ -130,7 +127,7 @@ if __name__ == '__main__':
     index = 0
 
     # Se normaliza la activación (Atenua pixeles para que no tenga mucho brillo)
-    activation = activation[index, :, :, :].numpy()
+    activation = activation[index, :, :, :].cpu().numpy()
     activation_normalized = (activation - activation.min()) / \
         (activation.max() - activation.min())
 
