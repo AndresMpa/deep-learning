@@ -120,6 +120,9 @@ if __name__ == '__main__':
     '''
     Visualization
     '''
+    # Se regresa el tenso a la CPU para su analisis    
+    architecture.to("cpu")
+
     # Registra el gancho en la capa de interés
     activation = activations["conv1"]
 
