@@ -1,7 +1,9 @@
-import multiprocessing
 import time
+import multiprocessing
 
-from util.architecture import create_architecture, create_optimizer, create_transform, get_loss_function, save_arch
+from util.architecture import create_architecture, create_optimizer
+from util.architecture import create_transform, get_loss_function, save_arch
+from util.activation import get_activation_hook, global_activation_hook
 from util.activation import normalize_activation
 from util.draw import draw_views, draw_error
 from util.dataset import create_dataset
@@ -41,23 +43,22 @@ if __name__ == '__main__':
     """
     Hooks
     """
-    # Función para registrar las activaciones de las capas intermedias
     activations = {}
 
-    def get_activation(name):
-        def hook(model, input, output):
-            activations[name] = output.detach()
-        return hook
+    # Mapping between layer indices and names
+    layer_mapping = {
+        3: 'conv1',
+        6: 'conv2',
+    }
 
-    def hook(module, input, output):
-        global activation
-        activation = output.detach()
+    # Register hooks based on the mapping
+    for layer_index, layer_name in layer_mapping.items():
+        hook_function = get_activation_hook(layer_name, activations)
+        architecture.characteristic[layer_index].register_forward_hook(
+            hook_function)
 
-    # Registrar ganchos (hooks) en capas intermedias
-    architecture.characteristic[3].register_forward_hook(
-        get_activation('conv1'))
-    architecture.characteristic[6].register_forward_hook(
-        get_activation('conv2'))
+    # Register a global hook
+    architecture.register_forward_hook(global_activation_hook)
 
     '''
     Trainig process
