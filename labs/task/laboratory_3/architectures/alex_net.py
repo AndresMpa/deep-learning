@@ -10,13 +10,11 @@ class AlexNet(nn.Module):
             # Bloque morado
             nn.Conv2d(3, 64, kernel_size=11, stride=4, padding=2),
             nn.ReLU(inplace=True),
-            nn.BatchNorm1d(64),
             # Bloque azul 1
             nn.MaxPool2d(kernel_size=3, stride=2, padding=0),
             # Bloque azul 2
             nn.Conv2d(64, 192, kernel_size=5, stride=1, padding=2),
             nn.ReLU(inplace=True),
-            nn.BatchNorm2d(192),
             # Bloque azul 3
             nn.MaxPool2d(kernel_size=3, stride=2, padding=0),
             # Bloque azul 4
