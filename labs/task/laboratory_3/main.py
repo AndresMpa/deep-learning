@@ -113,4 +113,4 @@ if __name__ == '__main__':
     '''
     Saving model
     '''
-    save_arch(architecture)
+    save_arch(architecture, timestamp)
