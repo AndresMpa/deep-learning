@@ -1,9 +1,5 @@
 import torch
 import torch.nn as nn
-import torch.optim as optim
-
-import torchvision
-import torchvision.transforms as transforms
 
 import multiprocessing
 
@@ -13,30 +9,46 @@ import numpy as np
 
 import time
 
-import os
+from util.architecture import create_architecture
+from util.architecture import create_optimizer
+from util.architecture import create_transform
+from util.dataset import create_dataset
 
-from architectures.vgg_16 import VGG16
-
+from config.vars import env_vars
 
 if __name__ == '__main__':
     start_time = time.time()
+
+    """
+    Threads management
+    """
     multiprocessing.freeze_support()
 
-    # Crear una instancia de VGG16
-    architecture = VGG16()
+    """
+    Architecture definition
+    """
+    architecture, device = create_architecture()
+    transform = create_transform()
 
-    # Verificar si hay una GPU disponible
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    """
+    Hiperparametros
+    """
+    lost_criteria = nn.CrossEntropyLoss()
+    optimizator = create_optimizer(architecture)
 
-    # Mover el modelo a la GPU si está disponible
-    architecture.to(device)
+    """
+    Analytics
+    """
+    error = []
 
-    transform = transforms.Compose([
-        transforms.RandomHorizontalFlip(),
-        transforms.RandomResizedCrop(224),
-        transforms.ToTensor(),
-    ])
+    """
+    Dataset
+    """
+    trainloader, testloader = create_dataset(transform)
 
+    """
+    Hooks
+    """
     # Función para registrar las activaciones de las capas intermedias
     activations = {}
 
@@ -49,6 +61,8 @@ if __name__ == '__main__':
         global activation
         activation = output.detach()
 
+    print(architecture.characteristic)
+
     # Registrar ganchos (hooks) en capas intermedias
     architecture.characteristic[3].register_forward_hook(
         get_activation('conv1'))
@@ -56,73 +70,31 @@ if __name__ == '__main__':
         get_activation('conv2'))
 
     '''
-    Se trae el dataset
-    '''
-
-    # Descargar y cargar el conjunto de datos CIFAR-10
-    data_path = "./data"
-
-    # ~5200 datos
-    trainset = torchvision.datasets.CIFAR10(
-        root=data_path, train=True, download=(not os.path.isdir(data_path)), transform=transform)
-    testset = torchvision.datasets.CIFAR10(
-        root=data_path, train=False, download=(not os.path.isdir(data_path)), transform=transform)
-
-    # ~900 datos
-    trainloader = torch.utils.data.DataLoader(
-        trainset, batch_size=8, shuffle=True, num_workers=2)
-    testloader = torch.utils.data.DataLoader(
-        testset, batch_size=8, shuffle=True, num_workers=2)
-
-    '''
-    Hiperparametros
-    '''
-
-    iterations = 1
-    learning_rate = 0.01
-    momentum_value = 0.8
-    lost_criteria = nn.CrossEntropyLoss()
-    optimizator = optim.SGD(architecture.parameters(),
-                            lr=learning_rate, momentum=momentum_value)
-
-    """
-    Analytics
-    """
-
-    error = []
-
-    '''
     Trainig process
     '''
 
-    for epochs in range(iterations):
+    for epochs in range(env_vars.iterations):
         iteration_lost = 0
         for j, i in enumerate(trainloader, 0):
             X, Y = i
             X, Y = X.to(device), Y.to(device)
-            # Se inicializan los gradientes
+
             optimizator.zero_grad()
-            # Se pasa la data por toda la architecture (Fowarding data)
             output = architecture(X)
-            # Se calcula la perdida del modelo
+
             lost = lost_criteria(output, Y)
-            # Backward propagation
             lost.backward()
-            # Se actualizan los pesos, es decir; se da un paso
+
             optimizator.step()
-            # Para almacenar la perdida en cada epoca
             iteration_lost += lost
 
             if (j % 200 == 0):
-                print('[{} {:5d} {:.3f}]'.format(
-                    epochs, j, iteration_lost / 200))
+                print(f'[{epochs} {j:5d} {(iteration_lost / 200):.3f}]')
                 error.append(iteration_lost)
                 iteration_lost = 0
 
     end_time = time.time()
-
     elapsed_time = end_time - start_time
-
     print(f"Took: {elapsed_time / 60.0:0.2f} minutes (Processing on GPU)")
 
     # Move the model back to the CPU
