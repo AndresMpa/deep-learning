@@ -8,12 +8,14 @@ from config.vars import env_vars
 
 def get_dataset(transform, isTrain=True):
     """
-    get_dataset Returns a data set from torchvision (Could be extended)
+    Returns a data set from torchvision (Could be extended)
 
-    :param transform: A transform PyTorch pipeline
-    :param isTrain: A flag to define if it's a test or not
+    Args:
+        transform (Object): A transform PyTorch pipeline
+        isTrain (Bool): A flag to define if it's a test or not
 
-    :return: A dataset
+    Returns:
+        An instance of a dataset
     """
     dataset = env_vars.dataset
     path = env_vars.data_path
@@ -29,11 +31,14 @@ def get_dataset(transform, isTrain=True):
 
 def get_loader(dataset):
     """
-    get_loader Creates a DataLoader using some data set, for each train
+    Creates a DataLoader using some data set, for each train
     or test data set
 
-    :param dataset: A slide of information for training or testing
-    :return: A DataLoader object
+    Args:
+        dataset (Object): A slide of information for training or testing
+
+    Returns:
+        A DataLoader object
     """
     return DataLoader(
         dataset,
@@ -44,12 +49,15 @@ def get_loader(dataset):
 
 def create_dataset(transform):
     """
-    create_dataset Generates a train and test set using some data set
+    Generates a train and test set using some data set
     specified on .env file
 
-    :param transform: A transform PyTorch pipeline
+    Args:
+        transform (Object): A transform PyTorch pipeline
 
-    :return: A train and test loader
+    Returns:
+        trainloader (Tensor): An slice of the dataset used for training
+        testloader (Tensor): An slice of the dataset used for testing
     """
 
     trainset = get_dataset(transform)

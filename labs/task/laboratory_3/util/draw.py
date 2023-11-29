@@ -6,9 +6,12 @@ from config.vars import env_vars
 
 def draw_views(views, conv, timestamp):
     """
-    draw_views Draws models views for an activation hook
+    Draws models views for an activation hook
 
-    :param views: A normalized activation
+    Args:
+        views (N-array): A normalized activation
+        conv (str): A reference for the current convolution
+        timestamp (str): A time stamp used as an id
     """
     plt.figure(figsize=(12, 4))
 
@@ -26,9 +29,11 @@ def draw_views(views, conv, timestamp):
 
 def draw_error(error, timestamp):
     """
-    draw_error Plot error (Loss) through epochs
+    Plot error (Loss) through epochs
 
-    :param error: A numpy array
+    Args:
+        error (N-array): Stores the error to plot
+        timestamp (str): A time stamp used as an id
     """
     plt.plot(np.arange(1, len(error) + 1, 1), np.array(error))
     plt.xlabel("Epochs")

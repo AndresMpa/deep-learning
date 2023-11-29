@@ -15,9 +15,10 @@ from architectures.vgg_19 import VGG19
 
 def get_architecture():
     """
-    get_architecture Return the selected architecture using .env file
+    Return the selected architecture using .env file
 
-    :return: Architecture class to use
+    Returns:
+        Architecture class to use
     """
     arch = env_vars.net_arch
     if arch == "AlexNet":
@@ -33,11 +34,12 @@ def get_architecture():
 
 def create_architecture():
     """
-    create_architecture Creates a new model using the given architecture
+    Creates a new model using the given architecture
     using GPU when possible of CPU by default
 
-    :return: architecture which is an instance of the architecture and
-    device which is the device used (GPU or CPU)
+    Returns:
+        architecture (Object): An instance of the architecture and
+        device (Object): The device used (GPU or CPU)
     """
     net_arch = get_architecture()
 
@@ -55,9 +57,10 @@ def create_architecture():
 
 def create_transform():
     """
-    create_transform Creates a transform using some specific pipeline
+    Creates a transform using some specific pipeline
 
-    :return: A transforms pipeline composed
+    Returns:
+        A transforms pipeline composed
     """
     return transforms.Compose([
         transforms.RandomHorizontalFlip(),
@@ -68,8 +71,12 @@ def create_transform():
 
 def get_loss_function():
     """
-    get_loss_function Returns a loss function using .env file vars to define
-    on of them
+    Create a new instance of a loss functions using some criteria from
+    .env file
+
+    Returns:
+        A loss function using .env file vars to define
+        on of them
     """
     if (env_vars.lost_criteria == "CrossEntropyLoss"):
         return nn.CrossEntropyLoss()
@@ -79,10 +86,11 @@ def get_loss_function():
 
 def create_optimizer(architecture):
     """
-    create_optimizer Creates an optimizer using hyper parameters from
+    Creates an optimizer using hyper parameters from
     .env file
 
-    :return: An optimizer
+    Returns:
+        An instance of an optimizer
     """
     return optim.SGD(
         architecture.parameters(),
@@ -92,9 +100,11 @@ def create_optimizer(architecture):
 
 def save_arch(arch, timestamp):
     """
-    save_arch Saves a model to handling with naming and paths creation
+    Saves a model to handling with naming and paths creation
 
-    :param arch: Architecture instance or model to save
+    Args:
+        arch (Instance): Architecture instance or model to save
+        timestamp: A time stamp used as id
     """
     net = env_vars.net_net
     dataset = env_vars.dataset
@@ -102,4 +112,5 @@ def save_arch(arch, timestamp):
 
     file_name = f"{timestamp}_arch-{net}_{dataset}_iter-{iterations}"
     file_path = (env_vars.results_path, file_name + ".pth")
+
     save(arch.state_dict(), file_path)

@@ -3,10 +3,13 @@ import os
 
 def get_current_path(path):
     """
-    get_current_path Gives the current absolute path
+    Gives the current absolute path
 
-    :param path: Path to add into root path
-    :return: Absolute directory path
+    Args:
+        path (str): Path to add into root path
+
+    Returns:
+        dir_path (str): Absolute directory path
     """
     root_dir = os.path.dirname(os.path.abspath(__file__))
     dir_path = os.path.join(root_dir, path)
@@ -15,22 +18,27 @@ def get_current_path(path):
 
 def check_path(path):
     """
-    check_path Checks if a path exist
+    Checks if a path exist
 
-    :param path: Path to check
-    :return: True is exist, False if not
+    Args:
+        path (str): Path to check
+
+    Returns:
+        True is exist, False if not
     """
     return (os.path.isdir(path))
 
 
 def create_path(path, filename):
     """
-    create_path Creates an absolute path for a file
+    Creates an absolute path for a file
 
-    :param path: A directory path to host the file
-    :param filename: A full file name extension included
+    Args:
+        path (str): A directory path to host the file
+        filename (str): A full file name extension included
 
-    :return: A file path to host a file
+    Returns:
+        file_path (str): A file path to host a file
     """
     absolute_path = get_current_path(path)
     file_path = os.path.join(absolute_path, filename)
@@ -40,10 +48,10 @@ def create_path(path, filename):
 
 def create_dir(path):
     """
-    create_path Creates a given path checking
-    is exists of not
+    Creates a given path checking is exists of not
 
-    :param path: Path to create
+    Args:
+        path (str): Path to create
     """
     try:
         if (check_path(path)):
@@ -60,9 +68,10 @@ def create_dir(path):
 
 def clear_dir(path):
     """
-    clear_path Delete all files inside a given directory
+    Delete all files inside a given directory
 
-    :param path: Path to directory to clear
+    Args:
+        path (str): Path to directory to clear
     """
     try:
         path = get_current_path(path)
