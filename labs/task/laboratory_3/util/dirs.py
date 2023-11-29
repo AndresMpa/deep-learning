@@ -11,7 +11,8 @@ def get_current_path(path):
     Returns:
         dir_path (str): Absolute directory path
     """
-    root_dir = os.path.dirname(os.path.abspath(__file__))
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.dirname(current_dir)
     dir_path = os.path.join(root_dir, path)
     return dir_path
 
