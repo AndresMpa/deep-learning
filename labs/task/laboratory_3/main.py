@@ -1,17 +1,9 @@
-import torch
-import torch.nn as nn
-
 import multiprocessing
-
-import matplotlib.pyplot as plt
-
-import numpy as np
-
 import time
 
-from util.architecture import create_architecture
-from util.architecture import create_optimizer
-from util.architecture import create_transform
+from util.architecture import create_architecture, create_optimizer, create_transform, get_loss_function, save_arch
+from util.activation import normalize_activation
+from util.draw import draw_views, draw_error
 from util.dataset import create_dataset
 
 from config.vars import env_vars
@@ -31,9 +23,9 @@ if __name__ == '__main__':
     transform = create_transform()
 
     """
-    Hiperparametros
+    Hyper parameters
     """
-    lost_criteria = nn.CrossEntropyLoss()
+    lost_criteria = get_loss_function()
     optimizator = create_optimizer(architecture)
 
     """
@@ -42,7 +34,7 @@ if __name__ == '__main__':
     error = []
 
     """
-    Dataset
+    Dataset split
     """
     trainloader, testloader = create_dataset(transform)
 
@@ -61,8 +53,6 @@ if __name__ == '__main__':
         global activation
         activation = output.detach()
 
-    print(architecture.characteristic)
-
     # Registrar ganchos (hooks) en capas intermedias
     architecture.characteristic[3].register_forward_hook(
         get_activation('conv1'))
@@ -72,7 +62,6 @@ if __name__ == '__main__':
     '''
     Trainig process
     '''
-
     for epochs in range(env_vars.iterations):
         iteration_lost = 0
         for j, i in enumerate(trainloader, 0):
@@ -103,44 +92,22 @@ if __name__ == '__main__':
     '''
     Visualization
     '''
-    # Registra el gancho en la capa de interés
-    activation = activations["conv1"]
-
-    # Index de la imagen a visualizar
-    index = 0
-
-    # Se normaliza la activación (Atenua pixeles para que no tenga mucho brillo)
-    activation = activation[index, :, :, :].cpu().numpy()
-
-    activation_normalized = (activation - activation.min()) / \
-        (activation.max() - activation.min())
-
-    # Se visualizan las activaciones
-    plt.figure(figsize=(12, 4))
-
-    for i in range(64):
-        plt.subplot(4, 16, i + 1)
-        plt.imshow(activation_normalized[i, :, :], cmap="viridis")
-        plt.axis("off")
-
-    # To save figure as a picture
-    plt.savefig('./results/activations.png')
+    activation_normalized = normalize_activation(activations["conv1"])
 
     '''
-    Loss Function Plot
+    Plotting activations
     '''
+    timestamp = time.time()
+    draw_views(activation_normalized, "conv1", timestamp)
 
+    '''
+    Plotting loss function
+    '''
     # Move the error to the CPU before plotting
     error_cpu = [e.cpu().item() for e in error]
+    draw_error(error_cpu, timestamp)
 
-    # Se visualiza la función de perdida
-    plt.plot(np.arange(1, len(error_cpu) + 1, 1), np.array(error_cpu))
-    plt.xlabel("Epochs")
-    plt.ylabel("Loss function")
-    plt.title("Loss through epochs")
-
-    # To save figure as a picture
-    plt.savefig('./results/loss_functions.png')
-
-    # Graba un modelo entrenado
-    torch.save(architecture.state_dict(), './results/architecture_cifar10.pth')
+    '''
+    Saving model
+    '''
+    save_arch(architecture)
