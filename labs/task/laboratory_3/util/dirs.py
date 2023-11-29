@@ -23,7 +23,22 @@ def check_path(path):
     return (os.path.isdir(path))
 
 
-def create_path(path):
+def create_path(path, filename):
+    """
+    create_path Creates an absolute path for a file
+
+    :param path: A directory path to host the file
+    :param filename: A full file name extension included
+
+    :return: A file path to host a file
+    """
+    absolute_path = get_current_path(path)
+    file_path = os.path.join(absolute_path, filename)
+
+    return file_path
+
+
+def create_dir(path):
     """
     create_path Creates a given path checking
     is exists of not
@@ -43,7 +58,7 @@ def create_path(path):
         print(f"[ERROR]: Creating {path}")
 
 
-def clear_path(path):
+def clear_dir(path):
     """
     clear_path Delete all files inside a given directory
 
