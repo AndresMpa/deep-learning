@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from uti.dirs import create_path
+from util.dirs import create_path
 
 from config.vars import env_vars
 
