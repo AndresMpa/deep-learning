@@ -120,7 +120,7 @@ def save_arch(arch, timestamp):
         arch (Instance): Architecture instance or model to save
         timestamp: A time stamp used as id
     """
-    net = env_vars.net_net
+    net = env_vars.net_arch
     dataset = env_vars.dataset
     iterations = env_vars.iterations
 
