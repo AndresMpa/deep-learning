@@ -8,25 +8,25 @@ class AlexNet(nn.Module):
         super(AlexNet, self).__init__()
         self.characteristic = nn.Sequential(
             # Bloque morado
-            nn.Conv2d(3, 96, kernel_size=11, stride=4, padding=0),
+            nn.Conv2d(3, 64, kernel_size=11, stride=4, padding=2),
             nn.ReLU(inplace=True),
-            nn.BatchNorm1d(96),
+            nn.BatchNorm1d(64),
             # Bloque azul 1
             nn.MaxPool2d(kernel_size=3, stride=2, padding=0),
             # Bloque azul 2
-            nn.Conv2d(64, 256, kernel_size=5, stride=1, padding=2),
+            nn.Conv2d(64, 192, kernel_size=5, stride=1, padding=2),
             nn.ReLU(inplace=True),
-            nn.BatchNorm2d(256),
+            nn.BatchNorm2d(192),
             # Bloque azul 3
             nn.MaxPool2d(kernel_size=3, stride=2, padding=0),
             # Bloque azul 4
-            nn.Conv2d(256, 384, kernel_size=5, stride=1, padding=2),
+            nn.Conv2d(192, 384, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
             # Bloque azul 6
-            nn.Conv2d(384, 384, kernel_size=5, stride=1, padding=2),
+            nn.Conv2d(384, 256, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
             # Bloque azul 7
-            nn.Conv2d(384, 256, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
             # Bloque azul 8
             nn.MaxPool2d(kernel_size=3, stride=2, padding=0),
@@ -41,6 +41,7 @@ class AlexNet(nn.Module):
             nn.Dropout(),
             nn.Linear(6 * 6 * 256, 4096),
             nn.ReLU(inplace=True),
+            nn.Dropout(),
             nn.Linear(4096, 4096),
             nn.ReLU(inplace=True),
             nn.Linear(4096, num_classes)
