@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+from uti.dirs import create_path
+
 from config.vars import env_vars
 
 
@@ -22,7 +24,7 @@ def draw_views(views, conv, timestamp):
 
     # To save figure as a picture
     file_name = f'./results/{timestamp}_{conv}_activations.png'
-    file_path = (env_vars.results_path, file_name + ".pth")
+    file_path = create_path(env_vars.results_path, file_name + ".pth")
     plt.savefig(file_path)
     plt.clf()
 
@@ -42,6 +44,6 @@ def draw_error(error, timestamp):
 
     # To save figure as a picture
     file_name = f'./results/{timestamp}_loss_functions.png'
-    file_path = (env_vars.results_path, file_name + ".pth")
+    file_path = create_path(env_vars.results_path, file_name + ".pth")
     plt.savefig(file_path)
     plt.clf()
