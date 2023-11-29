@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from util.dirs import create_path
+from util.dirs import create_path, create_dir
 
 from config.vars import env_vars
 
@@ -23,7 +23,10 @@ def draw_views(views, conv, timestamp):
         plt.axis("off")
 
     # To save figure as a picture
-    file_name = f'./results/{timestamp}_{conv}_activations.png'
+    results = env_vars.results_path
+    create_dir(results)
+
+    file_name = f'./{results}/{timestamp}_{conv}_activations.png'
     file_path = create_path(env_vars.results_path, file_name + ".png")
     plt.savefig(file_path)
     plt.clf()
@@ -43,7 +46,10 @@ def draw_error(error, timestamp):
     plt.title("Loss through epochs")
 
     # To save figure as a picture
-    file_name = f'./results/{timestamp}_loss_functions.png'
+    results = env_vars.results_path
+    create_dir(results)
+
+    file_name = f'./{results}/{timestamp}_loss_functions.png'
     file_path = create_path(env_vars.results_path, file_name + ".png")
     plt.savefig(file_path)
     plt.clf()

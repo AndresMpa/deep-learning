@@ -12,6 +12,7 @@ from architectures.alex_net import AlexNet
 from architectures.vgg_16 import VGG16
 from architectures.vgg_19 import VGG19
 
+from util.dirs import create_path, create_dir
 from util.logger import expected_time
 
 
@@ -121,7 +122,10 @@ def save_arch(arch, timestamp):
     dataset = env_vars.dataset
     iterations = env_vars.iterations
 
+    results = env_vars.results_path
+    create_dir(results)
+
     file_name = f"{timestamp}_arch-{net}_{dataset}_iter-{iterations}"
-    file_path = (env_vars.results_path, file_name + ".pth")
+    file_path = create_path(results, file_name + ".pth")
 
     save(arch.state_dict(), file_path)
