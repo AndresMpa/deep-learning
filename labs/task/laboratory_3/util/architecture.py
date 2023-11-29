@@ -8,9 +8,9 @@ import torchvision.transforms as transforms
 
 from config.vars import env_vars
 
-from architectures.alex_net import AlexNet
 from architectures.vgg_16 import VGG16
 from architectures.vgg_19 import VGG19
+from architectures.alex_net import AlexNet
 
 from util.dirs import create_path, create_dir
 from util.logger import expected_time
@@ -58,6 +58,8 @@ def create_architecture():
     if net_arch is None:
         # Handle the case where the architecture class is not found
         raise ValueError("Architecture class is None")
+
+    print(f'Using {"cuda: 0" if is_available() else "cpu"} for this')
 
     arch_device = device("cuda:0" if is_available() else "cpu")
     architecture = net_arch
