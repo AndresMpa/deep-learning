@@ -12,6 +12,8 @@ from architectures.alex_net import AlexNet
 from architectures.vgg_16 import VGG16
 from architectures.vgg_19 import VGG19
 
+from util.logger import expected_time
+
 
 def get_architecture():
     """
@@ -22,10 +24,19 @@ def get_architecture():
     """
     arch = env_vars.net_arch
     if arch == "AlexNet":
+        estimation = env_vars.iterations * 0.33
+        msg = f"Estimated waiting time, around {estimation} hrs"
+        expected_time(msg)
         return AlexNet()
     elif arch == "VGG16":
+        estimation = env_vars.iterations * 1.0523
+        msg = f"Estimated waiting time, around {estimation} hrs"
+        expected_time(msg)
         return VGG16()
     elif arch == "VGG19":
+        estimation = env_vars.iterations * 2.1046
+        msg = f"Estimated waiting time, around {estimation} hrs"
+        expected_time(msg)
         return VGG19()
     else:
         # Handle the case where the architecture is not recognized
