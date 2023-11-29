@@ -1,3 +1,5 @@
+import torch.nn as nn
+from torch import save
 from torch import device
 import torch.optim as optim
 from torch.cuda import is_available
@@ -6,9 +8,9 @@ import torchvision.transforms as transforms
 
 from config.vars import env_vars
 
+from architectures.alex_net import AlexNet
 from architectures.vgg_16 import VGG16
 from architectures.vgg_19 import VGG19
-from architectures.alex_net import AlexNet
 
 
 def get_architecture():
@@ -53,7 +55,9 @@ def create_architecture():
 
 def create_transform():
     """
-    create_transform Creates a transform using some specific pipe line
+    create_transform Creates a transform using some specific pipeline
+
+    :return: A transforms pipeline composed
     """
     return transforms.Compose([
         transforms.RandomHorizontalFlip(),
@@ -62,11 +66,40 @@ def create_transform():
     ])
 
 
+def get_loss_function():
+    """
+    get_loss_function Returns a loss function using .env file vars to define
+    on of them
+    """
+    if (env_vars.lost_criteria == "CrossEntropyLoss"):
+        return nn.CrossEntropyLoss()
+    elif (env_vars.lost_criteria == "BCELoss"):
+        return nn.BCELoss()
+
+
 def create_optimizer(architecture):
     """
     create_optimizer Creates an optimizer using hyper parameters from
     .env file
+
+    :return: An optimizer
     """
-    return optim.SGD(architecture.parameters(),
-                     lr=env_vars.learning_rate,
-                     momentum=env_vars.momentum_value)
+    return optim.SGD(
+        architecture.parameters(),
+        lr=env_vars.learning_rate,
+        momentum=env_vars.momentum_value)
+
+
+def save_arch(arch, timestamp):
+    """
+    save_arch Saves a model to handling with naming and paths creation
+
+    :param arch: Architecture instance or model to save
+    """
+    net = env_vars.net_net
+    dataset = env_vars.dataset
+    iterations = env_vars.iterations
+
+    file_name = f"{timestamp}_arch-{net}_{dataset}_iter-{iterations}"
+    file_path = (env_vars.results_path, file_name + ".pth")
+    save(arch.state_dict(), file_path)
