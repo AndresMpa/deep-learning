@@ -56,7 +56,8 @@ def create_log_entry(timestamp):
 
     if (not check_path(log_file_path)):
         create_dir(log_file_path)
-        print(log_file_path)
+
+    if (not check_path(log_file_path + "/log_file.csv")):
         create_log_file(log_file_path + "/log_file.csv")
 
     new_entry = [
