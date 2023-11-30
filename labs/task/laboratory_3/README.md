@@ -1,5 +1,10 @@
 # Project usage
 
+## What is this?
+
+You're seeing a computer vision test field, under the presented architecture, you can easily
+try some architecture such as VGGx16 VGGx19 and AlexNet
+
 ### Available dataset
 
 Data sets can be defined inside the .env file in the $DATASET$ variable, available dataset
