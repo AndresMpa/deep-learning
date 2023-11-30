@@ -30,4 +30,5 @@ env_vars = SimpleNamespace(
 
     # Results directory
     results_path=os.environ.get("RESULTS_PATH"),
+    log_path=os.environ.get("LOG_PATH"),
 )
