@@ -62,7 +62,7 @@ def create_architecture():
         # Handle the case where the architecture class is not found
         raise ValueError("Architecture class is None")
 
-    print(f'Using {"cuda: 0" if is_available() else "cpu"} for this')
+    print(f'Using {"cuda: 0" if is_available() else "cpu"} for processing')
 
     arch_device = device("cuda:0" if is_available() else "cpu")
     architecture = net_arch
