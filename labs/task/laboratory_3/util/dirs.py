@@ -62,7 +62,7 @@ def create_dir(path):
             dir_path = get_current_path(path)
             os.mkdir(dir_path)
 
-            print(f"Directory {path:%s} created")
+            print(f"Directory {path} created")
     except OSError:
         print(f"[ERROR]: Creating {path}")
 
