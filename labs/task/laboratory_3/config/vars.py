@@ -29,6 +29,7 @@ env_vars = SimpleNamespace(
     lost_criteria=os.environ.get("LOST_CRITERIA"),
 
     # Results directory
+    autoclear=os.environ.get("AUTOCLEAR") == "1",
     results_path=os.environ.get("RESULTS_PATH"),
     log_path=os.environ.get("LOG_PATH"),
 )
