@@ -4,14 +4,15 @@ import multiprocessing
 from util.architecture import create_architecture, create_optimizer
 from util.architecture import create_transform, get_loss_function, save_arch
 from util.activation import get_activation_hook, global_activation_hook
+from util.logger import create_log_entry, clear_log
 from util.activation import normalize_activation
 from util.draw import draw_views, draw_error
-from util.logger import create_log_entry
 from util.dataset import create_dataset
 
 from config.vars import env_vars
 
 if __name__ == '__main__':
+    clear_log()
     start_time = time.time()
 
     """
