@@ -79,10 +79,10 @@ if __name__ == '__main__':
             optimizator.step()
             iteration_lost += lost
 
-            if (j % 200 == 0 and (epochs > 0 and iteration_lost != 0)):
-                print(f'Epoch: {epochs+1} \t \
+            if (epochs == 0 and j % 200 == 0 or j % 200 == 0 and j > 0):
+                print(f'Epoch: {epochs + 1} \t \
                       Iteration: {j:5d} \t \
-                      Lost: {(iteration_lost/200):.3f}')
+                      Lost: {(iteration_lost / 200):.3f}')
                 error.append(iteration_lost)
                 iteration_lost = 0
 
