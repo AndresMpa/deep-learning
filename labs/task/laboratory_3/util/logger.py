@@ -5,7 +5,8 @@ import subprocess
 import platform
 import csv
 
-from util.dirs import get_current_path, check_path, create_dir, clear_dir
+from util.dirs import get_current_path, check_path, file_exists
+from util.dirs import create_dir, clear_dir
 
 from config.vars import env_vars
 
@@ -57,7 +58,7 @@ def create_log_entry(timestamp):
     if (not check_path(log_file_path)):
         create_dir(log_file_path)
 
-    if (not check_path(log_file_path + "/log_file.csv")):
+    if (not file_exists(log_file_path + "/log_file.csv")):
         create_log_file(log_file_path + "/log_file.csv")
 
     new_entry = [

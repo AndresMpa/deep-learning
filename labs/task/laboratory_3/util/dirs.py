@@ -17,6 +17,19 @@ def get_current_path(path):
     return dir_path
 
 
+def file_exists(file_path):
+    """
+    Check if a file exists.
+
+    Parameters:
+        - file_path (str): The path to the file.
+
+    Returns:
+        - bool: True if the file exists, False otherwise.
+    """
+    return os.path.exists(file_path)
+
+
 def check_path(path):
     """
     Checks if a path exist
