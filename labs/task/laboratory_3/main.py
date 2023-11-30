@@ -6,6 +6,7 @@ from util.architecture import create_transform, get_loss_function, save_arch
 from util.activation import get_activation_hook, global_activation_hook
 from util.activation import normalize_activation
 from util.draw import draw_views, draw_error
+from util.logger import create_log_entry
 from util.dataset import create_dataset
 
 from config.vars import env_vars
@@ -114,3 +115,8 @@ if __name__ == '__main__':
     Saving model
     '''
     save_arch(architecture, timestamp)
+
+    '''
+    Logs
+    '''
+    create_log_entry(timestamp)
