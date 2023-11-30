@@ -5,7 +5,7 @@ import subprocess
 import platform
 import csv
 
-from util.dirs import get_current_path, check_path, create_dir
+from util.dirs import get_current_path, check_path, create_dir, clear_dir
 
 from config.vars import env_vars
 
@@ -71,6 +71,15 @@ def create_log_entry(timestamp):
     ]
 
     add_entry_to_csv(log_file_path + "/log_file.csv", new_entry)
+
+
+def clear_log():
+    if (env_vars.autoclear):
+        results = get_current_path(env_vars.results_path)
+        log = get_current_path(env_vars.log_path)
+
+        clear_dir(results)
+        clear_dir(log)
 
 
 def expected_time(msg):
