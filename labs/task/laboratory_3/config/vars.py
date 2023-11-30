@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
-
 from types import SimpleNamespace
+from torch.cuda import is_available
 
 import os
 
@@ -9,11 +9,11 @@ load_dotenv()
 env_vars = SimpleNamespace(
     # Net props
     net_arch=os.environ.get("NET_ARCH"),
-    use_cuda=os.environ.get("USE_CUDA") == "1",
+    use_cuda=os.environ.get("USE_CUDA", is_available()) == "1",
 
     # Data
     dataset=os.environ.get("DATASET"),
-    data_path=os.environ.get("DATA_PATH"),
+    data_path=os.environ.get("DATA_PATH", "./data"),
     batch_size=int(os.environ.get("BATCH_SIZE")),
 
     # Image props
@@ -30,6 +30,6 @@ env_vars = SimpleNamespace(
 
     # Results directory
     autoclear=os.environ.get("AUTOCLEAR") == "1",
-    results_path=os.environ.get("RESULTS_PATH"),
-    log_path=os.environ.get("LOG_PATH"),
+    results_path=os.environ.get("RESULTS_PATH", "results"),
+    log_path=os.environ.get("LOG_PATH", "log"),
 )
