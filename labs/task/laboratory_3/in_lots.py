@@ -1,8 +1,9 @@
 import subprocess
 
 
-def update_env_parameters(env_file_path, parameters):
+def update_env_parameters(parameters):
     # Read the content of the .env file
+    env_file_path = ".env"
     with open(env_file_path, 'r') as file:
         lines = file.readlines()
 
@@ -17,10 +18,6 @@ def update_env_parameters(env_file_path, parameters):
         file.writelines(lines)
 
 
-# Specify the path to your .env file
-env_file_path = ".env"
-
-# Define combinations of parameters
 parameter_combinations = [
     {"NET_ARCH": "AlexNet", "ITERATIONS": "1", "LEARNING_RATE": "0.01"},
     {"NET_ARCH": "AlexNet", "ITERATIONS": "5", "LEARNING_RATE": "0.01"},
@@ -28,6 +25,7 @@ parameter_combinations = [
     {"NET_ARCH": "AlexNet", "ITERATIONS": "1", "LEARNING_RATE": "0.03"},
     {"NET_ARCH": "AlexNet", "ITERATIONS": "5", "LEARNING_RATE": "0.03"},
     {"NET_ARCH": "AlexNet", "ITERATIONS": "10", "LEARNING_RATE": "0.03"},
+    {"NET_ARCH": "AlexNet", "ITERATIONS": "100", "LEARNING_RATE": "0.03"},
 
     {"NET_ARCH": "VGG16", "ITERATIONS": "1", "LEARNING_RATE": "0.01"},
     {"NET_ARCH": "VGG16", "ITERATIONS": "5", "LEARNING_RATE": "0.01"},
@@ -35,6 +33,7 @@ parameter_combinations = [
     {"NET_ARCH": "VGG16", "ITERATIONS": "1", "LEARNING_RATE": "0.03"},
     {"NET_ARCH": "VGG16", "ITERATIONS": "5", "LEARNING_RATE": "0.03"},
     {"NET_ARCH": "VGG16", "ITERATIONS": "10", "LEARNING_RATE": "0.03"},
+    {"NET_ARCH": "VGG16", "ITERATIONS": "100", "LEARNING_RATE": "0.03"},
 
     {"NET_ARCH": "VGG19", "ITERATIONS": "1", "LEARNING_RATE": "0.01"},
     {"NET_ARCH": "VGG19", "ITERATIONS": "5", "LEARNING_RATE": "0.01"},
@@ -42,9 +41,11 @@ parameter_combinations = [
     {"NET_ARCH": "VGG19", "ITERATIONS": "1", "LEARNING_RATE": "0.03"},
     {"NET_ARCH": "VGG19", "ITERATIONS": "5", "LEARNING_RATE": "0.03"},
     {"NET_ARCH": "VGG19", "ITERATIONS": "10", "LEARNING_RATE": "0.03"},
+    {"NET_ARCH": "VGG19", "ITERATIONS": "100", "LEARNING_RATE": "0.03"},
 ]
 
 # Update parameters for each combination and call main.py
 for parameters in parameter_combinations:
-    update_env_parameters(env_file_path, parameters)
+    update_env_parameters(parameters)
+
     subprocess.call(["python", "main.py"])
