@@ -26,20 +26,20 @@ def get_architecture():
     arch = env_vars.net_arch
     if arch == "AlexNet":
         estimation = env_vars.iterations * 0.33
-        msg = f"Using {arch}: Estimated waiting time, \
-            around {estimation:0.2f} hrs"
+        msg = f"Using {arch}: \t \
+            Estimated waiting time, around {estimation:0.2f} hrs"
         expected_time(msg)
         return AlexNet()
     elif arch == "VGG16":
         estimation = env_vars.iterations * 1.0523
-        msg = f"Using {arch}: Estimated waiting time, \
-            around {estimation:0.2f} hrs"
+        msg = f"Using {arch}: \t \
+            Estimated waiting time, around {estimation:0.2f} hrs"
         expected_time(msg)
         return VGG16()
     elif arch == "VGG19":
         estimation = env_vars.iterations * 2.1046
-        msg = f"Using {arch}: Estimated waiting time, \
-            around {estimation:0.2f} hrs"
+        msg = f"Using {arch}: \t \
+            Estimated waiting time, around {estimation:0.2f} hrs"
         expected_time(msg)
         return VGG19()
     else:
