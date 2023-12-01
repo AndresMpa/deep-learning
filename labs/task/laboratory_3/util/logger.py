@@ -1,4 +1,5 @@
 from torch.cuda import is_available
+from plyer import notification
 from datetime import datetime
 
 import subprocess
@@ -102,3 +103,19 @@ def expected_time(msg):
         print(f"{msg}")
     except subprocess.CalledProcessError as error:
         print(f"Unexpected error: {error}")
+
+
+def send_message_to_os(message, title=""):
+    """
+    Sends a desktop notification using the plyer library.
+
+    Args:
+        - message (str): The message to be displayed in the notification.
+        - title (str): The title to be displayed in the notification.
+    """
+    notification.notify(
+        title=title,
+        message=message,
+        app_icon=None,
+        timeout=10,
+    )
