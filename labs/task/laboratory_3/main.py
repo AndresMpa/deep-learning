@@ -1,14 +1,14 @@
 import time
 import multiprocessing
 
+from util.dataset import create_dataset
 from util.architecture import create_architecture, create_optimizer
 from util.architecture import create_transform, get_loss_function, save_arch
 from util.activation import get_activation_hook, global_activation_hook
-from util.logger import create_log_entry, clear_log
 from util.activation import normalize_activation
 from util.draw import draw_views, draw_error
-from util.dataset import create_dataset
 
+from util.logger import create_log_entry, clear_log, send_message_to_os
 from config.vars import env_vars
 
 if __name__ == '__main__':
@@ -121,3 +121,7 @@ if __name__ == '__main__':
     Logs
     '''
     create_log_entry(timestamp, elapsed_time)
+    send_message_to_os(
+        f"Process ended; took {elapsed_time} minutes",
+        f"{env_vars.net_arch}"
+    )
