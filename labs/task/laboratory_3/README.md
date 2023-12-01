@@ -28,7 +28,7 @@ other options
 ```bath
 python -m venv env
 env\Scripts\activate
-pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+pip3 install numpy python-dotenv matplotlib torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 ```
 
 #### Linux
@@ -36,5 +36,5 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 ```bash
 python -m venv env
 source env/bin/activate
-pip3 install torch torchvision torchaudio
+pip3 install python-dotenv matplotlib numpy torch torchvision torchaudio
 ```
