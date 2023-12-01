@@ -120,4 +120,4 @@ if __name__ == '__main__':
     '''
     Logs
     '''
-    create_log_entry(timestamp)
+    create_log_entry(timestamp, elapsed_time)

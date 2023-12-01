@@ -41,11 +41,12 @@ def create_log_file(log_file_path):
         "Learning rate",
         "Momentum",
         "Log date"
+        "Took (min)"
     ]
     add_entry_to_csv(log_file_path, entry_labels)
 
 
-def create_log_entry(timestamp):
+def create_log_entry(timestamp, elapsed_time):
     """
     Creates an entry in a CSV log file
 
@@ -69,7 +70,8 @@ def create_log_entry(timestamp):
         env_vars.iterations,
         env_vars.learning_rate,
         env_vars.momentum_value,
-        log_datetime
+        log_datetime,
+        elapsed_time
     ]
 
     add_entry_to_csv(log_file_path + "/log_file.csv", new_entry)
