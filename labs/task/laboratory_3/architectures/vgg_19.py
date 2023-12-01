@@ -62,14 +62,13 @@ class VGG19(nn.Module):
         )
 
         self.classificator_nn = nn.Sequential(
-            nn.Dropout(),
             nn.Linear(7 * 7 * 512, 4096),                       # FC - 1
             nn.ReLU(inplace=True),
+            nn.Dropout(),
             nn.Linear(4096, 4096),                              # FC - 2
             nn.ReLU(inplace=True),
-            nn.Linear(4096, num_classes),                       # FC - 3
-            nn.ReLU(inplace=True),
-            nn.Softmax(dim=1)                                 # Output
+            nn.Dropout(),
+            nn.Linear(4096, num_classes)                        # FC - 3
         )
 
     def forward(self, x_data):
