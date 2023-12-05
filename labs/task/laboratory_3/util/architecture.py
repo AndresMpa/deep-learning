@@ -133,4 +133,6 @@ def save_arch(arch, timestamp):
     file_name = f"{timestamp}_arch-{net}_{dataset}_iter-{iterations}"
     file_path = create_path(results, file_name + ".pth")
 
+    print(f"Created file at: {file_path}")
+
     save(arch.state_dict(), file_path)
