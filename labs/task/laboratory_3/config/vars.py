@@ -24,6 +24,7 @@ env_vars = SimpleNamespace(
     iterations=int(os.environ.get("ITERATIONS")),
     learning_rate=float(os.environ.get("LEARNING_RATE")),
     momentum_value=float(os.environ.get("MOMENTUM_VALUE")),
+    catch_interval=int(os.environ.get("CATCH_INTERVAL", 200)),
 
     # Loss
     lost_criteria=os.environ.get("LOST_CRITERIA"),
