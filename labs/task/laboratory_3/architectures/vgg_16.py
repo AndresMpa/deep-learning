@@ -1,8 +1,5 @@
 import torch.nn as nn
 
-# Definición del modelo
-
-
 class VGG16(nn.Module):
     def __init__(self, num_classes=1000):
         super(VGG16, self).__init__()

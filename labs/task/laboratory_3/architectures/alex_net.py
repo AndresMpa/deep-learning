@@ -1,8 +1,5 @@
 import torch.nn as nn
 
-# Definición del modelo
-
-
 class AlexNet(nn.Module):
     def __init__(self, num_classes=1000):
         super(AlexNet, self).__init__()
