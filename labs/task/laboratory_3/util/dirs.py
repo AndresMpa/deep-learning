@@ -69,7 +69,6 @@ def create_dir(path):
     """
     try:
         if (check_path(path)):
-            print(f"{path} already exists")
             return
         else:
             dir_path = get_current_path(path)
