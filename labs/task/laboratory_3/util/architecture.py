@@ -11,6 +11,7 @@ from config.vars import env_vars
 from architectures.vgg_16 import VGG16
 from architectures.vgg_19 import VGG19
 from architectures.alex_net import AlexNet
+from architectures.resnet import ResNet, ResidualBlock
 
 from util.dirs import create_path, create_dir
 from util.logger import expected_time
@@ -25,13 +26,13 @@ def get_architecture():
     """
     arch = env_vars.net_arch
     if arch == "AlexNet":
-        estimation = env_vars.iterations * 0.33
+        estimation = env_vars.iterations * 0.0776
         msg = f"Using {arch}: \t \
             Estimated waiting time, around {estimation:0.2f} hrs"
         expected_time(msg)
         return AlexNet()
     elif arch == "VGG16":
-        estimation = env_vars.iterations * 1.0523
+        estimation = env_vars.iterations * 0.12011
         msg = f"Using {arch}: \t \
             Estimated waiting time, around {estimation:0.2f} hrs"
         expected_time(msg)
@@ -42,6 +43,12 @@ def get_architecture():
             Estimated waiting time, around {estimation:0.2f} hrs"
         expected_time(msg)
         return VGG19()
+    elif arch == "ResNet":
+        estimation = env_vars.iterations * 0.0416667
+        msg = f"Using {arch}: \t \
+            Estimated waiting time, around {estimation:0.2f} hrs"
+        expected_time(msg)
+        return ResNet(ResidualBlock, [2, 2, 2, 2])
     else:
         # Handle the case where the architecture is not recognized
         raise ValueError(f"Unsupported architecture: {arch}")
@@ -79,11 +86,18 @@ def create_transform():
     Returns:
         A transforms pipeline composed
     """
-    return transforms.Compose([
-        transforms.RandomHorizontalFlip(),
-        transforms.RandomResizedCrop(env_vars.img_size),
-        transforms.ToTensor(),
-    ])
+    arch = env_vars.net_arch
+    if arch == "ResNet":
+        return transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+        ])
+    else:
+        return transforms.Compose([
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomResizedCrop(env_vars.img_size),
+            transforms.ToTensor(),
+        ])
 
 
 def get_loss_function():
