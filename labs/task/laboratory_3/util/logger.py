@@ -36,13 +36,14 @@ def create_log_file(log_file_path):
     entry_labels = [
         'ID - Timestamp',
         "Net Architecture",
-        'Training method',
+        "Stage",
+        'Device method',
         "Batch size",
         "Iterations",
         "Learning rate",
         "Momentum",
         "Log date"
-        "Took (min)"
+        "Took (min)",
     ]
     add_entry_to_csv(log_file_path, entry_labels)
 
@@ -51,8 +52,9 @@ def create_log_entry(timestamp, elapsed_time):
     """
     Creates an entry in a CSV log file
 
-    Parameters:
+    Args:
         - timestamp (str): A id (Though to be a timestamp)
+        - elapsed_time (float): Time passed as a number
     """
     log_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     log_file_path = get_current_path(env_vars.log_path)
@@ -66,13 +68,14 @@ def create_log_entry(timestamp, elapsed_time):
     new_entry = [
         timestamp,
         env_vars.net_arch,
-        "Using GPU" if is_available() else "Using CPU",
+        "Using pre-trained" if env_vars.use_model else "Training",
+        "GPU" if is_available() else "CPU",
         env_vars.batch_size,
         env_vars.iterations,
         env_vars.learning_rate,
         env_vars.momentum_value,
         log_datetime,
-        elapsed_time
+        elapsed_time,
     ]
 
     add_entry_to_csv(log_file_path + "/log_file.csv", new_entry)
