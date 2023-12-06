@@ -4,26 +4,26 @@ class AlexNet(nn.Module):
     def __init__(self, num_classes=1000):
         super(AlexNet, self).__init__()
         self.characteristic = nn.Sequential(
-            # Bloque morado
+            # Input block
             nn.Conv2d(3, 64, kernel_size=11, stride=4, padding=2),
             nn.ReLU(inplace=True),
-            # Bloque azul 1
+            # Conv 1
             nn.MaxPool2d(kernel_size=3, stride=2, padding=0),
-            # Bloque azul 2
+            # Conv 2
             nn.Conv2d(64, 192, kernel_size=5, stride=1, padding=2),
             nn.ReLU(inplace=True),
-            # Bloque azul 3
+            # Conv 3
             nn.MaxPool2d(kernel_size=3, stride=2, padding=0),
-            # Bloque azul 4
+            # Conv 4
             nn.Conv2d(192, 384, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
-            # Bloque azul 6
+            # Conv 6
             nn.Conv2d(384, 256, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
-            # Bloque azul 7
+            # Conv 7
             nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
-            # Bloque azul 8
+            # Conv 8
             nn.MaxPool2d(kernel_size=3, stride=2, padding=0),
         )
 

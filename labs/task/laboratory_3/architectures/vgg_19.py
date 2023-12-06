@@ -4,21 +4,21 @@ class VGG19(nn.Module):
     def __init__(self, num_classes=1000):
         super(VGG19, self).__init__()
         self.characteristic = nn.Sequential(
-            # Bloque 1
+            # Block 1
             nn.Conv2d(3, 64, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
             nn.Conv2d(64, 64, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=2, stride=2),
 
-            # Bloque 2
+            # Block 2
             nn.Conv2d(64, 128, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
             nn.Conv2d(128, 128, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=2, stride=2),
 
-            # Bloque 3
+            # Block 3
             nn.Conv2d(128, 256, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
             nn.Conv2d(256, 256, kernel_size=3, padding=1),
@@ -29,7 +29,7 @@ class VGG19(nn.Module):
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=2, stride=2),
 
-            # Bloque 4
+            # Block 4
             nn.Conv2d(256, 512, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
             nn.Conv2d(512, 512, kernel_size=3, padding=1),
@@ -40,7 +40,7 @@ class VGG19(nn.Module):
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=2, stride=2),
 
-            # Bloque 5
+            # Block 5
             nn.Conv2d(512, 512, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
             nn.Conv2d(512, 512, kernel_size=3, padding=1),
@@ -52,7 +52,6 @@ class VGG19(nn.Module):
             nn.MaxPool2d(kernel_size=2, stride=2),
         )
 
-        # Bloque 6
         self.flatter = nn.Sequential(
             nn.AdaptiveAvgPool2d((7, 7)),
             nn.Flatten()
