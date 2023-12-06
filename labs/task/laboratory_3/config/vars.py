@@ -11,6 +11,10 @@ env_vars = SimpleNamespace(
     net_arch=os.environ.get("NET_ARCH"),
     use_cuda=os.environ.get("USE_CUDA", is_available()) == "1",
 
+    # Models
+    models_path=os.environ.get("MODELS_PATH", "models"),
+    use_model=os.environ.get("USE_MODEL", False) == "1",
+
     # Data
     dataset=os.environ.get("DATASET"),
     data_path=os.environ.get("DATA_PATH", "./data"),
