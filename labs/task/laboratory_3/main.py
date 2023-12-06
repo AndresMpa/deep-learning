@@ -2,7 +2,7 @@ import time
 import multiprocessing
 
 from util.dataset import create_dataset
-from util.architecture import create_architecture, create_optimizer
+from util.architecture import create_architecture, create_optimizer, use_model
 from util.architecture import create_transform, get_loss_function, save_arch
 from util.activation import get_activation_hook, global_activation_hook
 from util.activation import normalize_activation
@@ -11,14 +11,9 @@ from util.draw import draw_views, draw_error
 from util.logger import create_log_entry, clear_log, send_message_to_os
 from config.vars import env_vars
 
-if __name__ == '__main__':
-    clear_log()
-    start_time = time.time()
 
-    """
-    Threads management
-    """
-    multiprocessing.freeze_support()
+def execute_training():
+    start_time = time.time()
 
     """
     Architecture definition
@@ -50,7 +45,6 @@ if __name__ == '__main__':
     # Mapping between layer indices and names
     layer_mapping = {
         3: 'conv1',
-        #6: 'conv2',
     }
 
     # Register hooks based on the mapping
@@ -80,10 +74,12 @@ if __name__ == '__main__':
             optimizator.step()
             iteration_lost += lost.item()
 
-            if (epochs == 0 and j % env_vars.catch_interval == 0 or j % env_vars.catch_interval == 0 and j > 0):
-                print(f'Epoch: {epochs + 1} \t \
-                        Iteration: {j:5d} \t \
-                        Lost: {(iteration_lost / env_vars.catch_interval):.3f}')
+            if (epochs == 0 and j % env_vars.catch_interval == 0
+                    or j % env_vars.catch_interval == 0 and j > 0):
+                print(
+                    f'Epoch: {epochs + 1} \t \
+                    Iteration: {j:5d} \t \
+                    Lost: {(iteration_lost / env_vars.catch_interval):.3f}')
                 error.append(iteration_lost / env_vars.catch_interval)
                 iteration_lost = 0
 
@@ -125,3 +121,18 @@ if __name__ == '__main__':
         f"Process ended; took {elapsed_time} minutes",
         f"{env_vars.net_arch}"
     )
+
+
+if __name__ == '__main__':
+    clear_log()
+
+    """
+    Threads management
+    """
+    multiprocessing.freeze_support()
+
+    if env_vars.use_model:
+        model = use_model()
+        print(model)
+    else:
+        execute_training()
