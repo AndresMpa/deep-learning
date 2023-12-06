@@ -7,13 +7,16 @@ class ResidualBlock(nn.Module):
 
     Note: Residual blocks allow ResNet to face vanishing gradient
     """
+
     def __init__(self, in_channels, out_channels, stride=1):
         super(ResidualBlock, self).__init__()
         self.characteristic = nn.Sequential(
-            nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=stride, padding=1, bias=False),
+            nn.Conv2d(in_channels, out_channels, kernel_size=3,
+                      stride=stride, padding=1, bias=False),
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
-            nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding=1, bias=False),
+            nn.Conv2d(out_channels, out_channels, kernel_size=3,
+                      stride=1, padding=1, bias=False),
             nn.BatchNorm2d(out_channels),
         )
 
@@ -21,7 +24,8 @@ class ResidualBlock(nn.Module):
         self.shortcut = nn.Sequential()
         if stride != 1 or in_channels != out_channels:
             self.shortcut = nn.Sequential(
-                nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=stride, bias=False),
+                nn.Conv2d(in_channels, out_channels, kernel_size=1,
+                          stride=stride, bias=False),
                 nn.BatchNorm2d(out_channels)
             )
 
@@ -62,7 +66,8 @@ class ResNet(nn.Module):
     def _make_layer(self, block, out_channels, blocks, stride=1):
         layers = [block(self.in_channels, out_channels, stride)]
         self.in_channels = out_channels
-        layers.extend([block(out_channels, out_channels, stride=1) for _ in range(1, blocks)])
+        layers.extend([block(out_channels, out_channels, stride=1)
+                      for _ in range(1, blocks)])
         return nn.Sequential(*layers)
 
     def forward(self, x_data):
