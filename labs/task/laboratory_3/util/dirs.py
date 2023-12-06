@@ -19,15 +19,32 @@ def get_current_path(path):
 
 def file_exists(file_path):
     """
-    Check if a file exists.
+    Check if a file exists
 
-    Parameters:
-        - file_path (str): The path to the file.
+    Args:
+        - file_path (str): The path to the file
 
     Returns:
-        - bool: True if the file exists, False otherwise.
+        - bool: True if the file exists, False otherwise
     """
     return os.path.exists(file_path)
+
+
+def list_files(path, extention):
+    """
+    List files with a specific extension in a directory
+
+    Args:
+        - path (str): The path to the directory containing the files
+        - extension (str): The file extension to filter files. Only files with
+        this extension will be included in the list
+
+    Returns:
+        - files (list): A list of file names in the specified directory
+        (`path`) that have the specified file extension (`extension`)
+    """
+    files = [f for f in os.listdir(path) if f.endswith(extention)]
+    return files
 
 
 def check_path(path):
