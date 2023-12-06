@@ -3,4 +3,5 @@ data
 env
 results
 log
+models
 *__pychache__
