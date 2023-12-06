@@ -50,7 +50,7 @@ if __name__ == '__main__':
     # Mapping between layer indices and names
     layer_mapping = {
         3: 'conv1',
-        6: 'conv2',
+        #6: 'conv2',
     }
 
     # Register hooks based on the mapping
