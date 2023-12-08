@@ -47,7 +47,7 @@ def get_loader(dataset):
         num_workers=2)
 
 
-def create_dataset(transform):
+def create_dataset(transform, get_sets=False):
     """
     Generates a train and test set using some data set
     specified on .env file
@@ -66,4 +66,7 @@ def create_dataset(transform):
     trainloader = get_loader(trainset)
     testloader = get_loader(testset)
 
-    return trainloader, testloader
+    if get_sets:
+        return trainloader, testloader, trainset, testset
+    else:
+        return trainloader, testloader
