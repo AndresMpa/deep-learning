@@ -16,12 +16,14 @@ from config.vars import env_vars
 
 
 def execute_eval():
+    start_time = time.time()
+
     """
     Model definition
     """
-    transform = create_transform()
+    model, model_name = use_model()
+    transform = create_transform(model_name)
     device = create_device()
-    model = use_model()
 
     print(model)
 
@@ -49,7 +51,7 @@ def execute_eval():
             correct += (predicted == target).sum().item()
 
             # Print batch-level information
-            if batch_idx % 10 == 0:  # Print every 10 batches
+            if batch_idx % 10 == 0:
                 print(
                     f'Batch [{batch_idx}/{len(testloader)}],\t \
                     Accuracy: {correct / total * 100:.2f}%')
@@ -57,6 +59,17 @@ def execute_eval():
     # Print overall accuracy
     accuracy = correct / total
     print(f"Accuracy on the sample dataset: {accuracy * 100:.2f}%")
+
+    end_time = time.time()
+    elapsed_time = (end_time - start_time) / 60.0
+    print(f"Took: {elapsed_time:0.2f} minutes")
+
+    timestamp = time.time()
+
+    '''
+    Logs
+    '''
+    create_log_entry(timestamp, elapsed_time)
 
 
 def execute_training():
@@ -132,7 +145,9 @@ def execute_training():
 
     end_time = time.time()
     elapsed_time = (end_time - start_time) / 60.0
-    print(f"Took: {elapsed_time:0.2f} minutes (Processing on GPU)")
+    print(f"Took: {elapsed_time:0.2f} minutes")
+
+    timestamp = time.time()
 
     # Move the model back to the CPU
     architecture.to("cpu")
@@ -145,7 +160,6 @@ def execute_training():
     '''
     Plotting activations
     '''
-    timestamp = time.time()
     draw_views(activation_normalized, "conv1", timestamp)
 
     '''
