@@ -12,19 +12,18 @@ from architectures.vgg_19 import VGG19
 from architectures.alex_net import AlexNet
 from architectures.resnet import ResNet, ResidualBlock
 
-from util.dirs import get_current_path, create_path,  check_path
-from util.dirs import create_dir, list_files
+from util.dirs import get_current_path, create_path, check_path
+from util.dirs import create_dir, list_files, extract_file_name_data
 from util.logger import expected_time
 
 
-def get_architecture():
+def get_architecture(arch=env_vars.net_arch):
     """
     Return the selected architecture using .env file
 
     Returns:
         Architecture class to use
     """
-    arch = env_vars.net_arch
     if arch == "AlexNet":
         estimation = env_vars.iterations * 0.0776
         msg = f"Using {arch}: \t \
@@ -38,7 +37,7 @@ def get_architecture():
         expected_time(msg)
         return VGG16()
     elif arch == "VGG19":
-        estimation = env_vars.iterations * 2.1046
+        estimation = env_vars.iterations * 0.65135
         msg = f"Using {arch}: \t \
             Estimated waiting time, around {estimation:0.2f} hrs"
         expected_time(msg)
@@ -64,6 +63,18 @@ def get_device():
     return ("cuda:0" if is_available() else "cpu")
 
 
+def create_device():
+    """
+    Creates an instance of a device using CPU or GPU depending on get_device()
+    output
+
+    Returns:
+        An instance of device
+    """
+    print(f'Using {get_device()} for processing')
+    return device(get_device())
+
+
 def create_architecture():
     """
     Creates a new model using the given architecture
@@ -79,9 +90,7 @@ def create_architecture():
         # Handle the case where the architecture class is not found
         raise ValueError("Architecture class is None")
 
-    print(f'Using {get_device()} for processing')
-
-    arch_device = device(get_device())
+    arch_device = create_device()
     architecture = net_arch
 
     architecture.to(arch_device)
@@ -167,7 +176,7 @@ def get_model_to_use():
     Create a path for a selected (By the console) model under ".pth" format
 
     Returns:
-        A path for a model to use
+        A path for a model to use also the model's name according to its file
     """
     models_path = env_vars.models_path
 
@@ -188,7 +197,9 @@ def get_model_to_use():
             f"{models_path}" +
             f"/{available_models[selected_model_index]}")
 
-        return selected_model_path
+        model_name = extract_file_name_data(
+            available_models[selected_model_index], "arch-", "_")
+        return selected_model_path, model_name
     else:
         dir_error = f"[ERROR]: Directory {models_path} does not exist"
         raise Exception(dir_error)
@@ -201,5 +212,12 @@ def use_model():
     Returns:
         model (Object): A instance of a pre-trained model
     """
-    model = load(get_model_to_use(), map_location=device(get_device()))
+    models_path, model_name = get_model_to_use()
+    loaded_state_model = load(models_path, map_location=device(get_device()))
+
+    architecture = get_architecture(model_name)
+    model = architecture
+
+    model.load_state_dict(loaded_state_model)
+
     return model
