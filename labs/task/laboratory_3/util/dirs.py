@@ -1,4 +1,26 @@
 import os
+import re
+
+
+def extract_file_name_data(file_name, prefix, suffix):
+    """
+    Extracts the model name from a file name based on a given prefix and suffix
+
+    Args:
+        file_name (str): The input file name containing the model name
+        prefix (str): The prefix before the model name in the file name
+        suffix (str): The suffix after the model name in the file name
+
+    Returns:
+        str or None: The extracted model name or None if not found
+    """
+    pattern = rf'{re.escape(prefix)}([a-zA-Z0-9]+){re.escape(suffix)}'
+    match = re.search(pattern, file_name)
+
+    if match:
+        return match.group(1)
+    else:
+        return None
 
 
 def get_current_path(path):
