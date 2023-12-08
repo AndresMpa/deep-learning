@@ -1,8 +1,11 @@
+import torch
+
 import time
 import multiprocessing
 
 from util.dataset import create_dataset
-from util.architecture import create_architecture, create_optimizer, use_model
+from util.architecture import use_model, create_device
+from util.architecture import create_architecture, create_optimizer
 from util.architecture import create_transform, get_loss_function, save_arch
 from util.activation import get_activation_hook, global_activation_hook
 from util.activation import normalize_activation
@@ -10,6 +13,50 @@ from util.draw import draw_views, draw_error
 
 from util.logger import create_log_entry, clear_log, send_message_to_os
 from config.vars import env_vars
+
+
+def execute_eval():
+    """
+    Model definition
+    """
+    transform = create_transform()
+    device = create_device()
+    model = use_model()
+
+    print(model)
+
+    """
+    Dataset split
+    """
+    _, testloader = create_dataset(transform)
+
+    """
+    Setting eval function
+    """
+    model.eval()
+
+    correct = 0
+    total = 0
+
+    with torch.no_grad():
+        for batch_idx, (input, target) in enumerate(testloader):
+            input, target = input.to(device), target.to(device)
+
+            outputs = model(input)
+
+            _, predicted = torch.max(outputs.data, 1)
+            total += target.size(0)
+            correct += (predicted == target).sum().item()
+
+            # Print batch-level information
+            if batch_idx % 10 == 0:  # Print every 10 batches
+                print(
+                    f'Batch [{batch_idx}/{len(testloader)}],\t \
+                    Accuracy: {correct / total * 100:.2f}%')
+
+    # Print overall accuracy
+    accuracy = correct / total
+    print(f"Accuracy on the sample dataset: {accuracy * 100:.2f}%")
 
 
 def execute_training():
@@ -35,7 +82,7 @@ def execute_training():
     """
     Dataset split
     """
-    trainloader, testloader = create_dataset(transform)
+    trainloader, _ = create_dataset(transform)
 
     """
     Hooks
@@ -62,13 +109,13 @@ def execute_training():
     for epochs in range(env_vars.iterations):
         iteration_lost = 0
         for j, i in enumerate(trainloader, 0):
-            X, Y = i
-            X, Y = X.to(device), Y.to(device)
+            data_input, label = i
+            data_input, label = data_input.to(device), label.to(device)
 
             optimizator.zero_grad()
-            output = architecture(X)
+            output = architecture(data_input)
 
-            lost = lost_criteria(output, Y)
+            lost = lost_criteria(output, label)
             lost.backward()
 
             optimizator.step()
@@ -132,7 +179,6 @@ if __name__ == '__main__':
     multiprocessing.freeze_support()
 
     if env_vars.use_model:
-        model = use_model()
-        print(model)
+        execute_eval()
     else:
         execute_training()
