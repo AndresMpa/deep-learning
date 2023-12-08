@@ -98,14 +98,13 @@ def create_architecture():
     return architecture, arch_device
 
 
-def create_transform():
+def create_transform(arch=env_vars.net_arch):
     """
     Creates a transform using some specific pipeline
 
     Returns:
         A transforms pipeline composed
     """
-    arch = env_vars.net_arch
     if arch == "ResNet":
         return transforms.Compose([
             transforms.ToTensor(),
@@ -220,4 +219,4 @@ def use_model():
 
     model.load_state_dict(loaded_state_model)
 
-    return model
+    return model, model_name
