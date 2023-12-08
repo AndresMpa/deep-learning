@@ -82,6 +82,9 @@ def create_log_entry(timestamp, elapsed_time):
 
 
 def clear_log():
+    """
+    Deletes files fomr "results" and "logs", it can be enable trough .env file
+    """
     if (env_vars.autoclear):
         results = get_current_path(env_vars.results_path)
         log = get_current_path(env_vars.log_path)
