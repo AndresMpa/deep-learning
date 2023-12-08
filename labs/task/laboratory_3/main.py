@@ -70,6 +70,10 @@ def execute_eval():
     Logs
     '''
     create_log_entry(timestamp, elapsed_time)
+    send_message_to_os(
+        f"Process ended; took {elapsed_time} minutes",
+        f"{model_name}"
+    )
 
 
 def execute_training():
