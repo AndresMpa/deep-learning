@@ -60,7 +60,7 @@ def get_device():
     Returns:
         A flag as a string "CPU" or "GPU" depending on which one is available
     """
-    return ("cuda:0" if is_available() else "cpu")
+    return ("cuda:0" if is_available() and env_vars.use_cuda else "cpu")
 
 
 def create_device():
@@ -118,7 +118,7 @@ def create_transform(arch=env_vars.net_arch):
         ])
 
 
-def get_loss_function():
+def get_loss_function(criteria=env_vars.lost_criteria):
     """
     Create a new instance of a loss functions using some criteria from
     .env file
@@ -127,9 +127,9 @@ def get_loss_function():
         A loss function using .env file vars to define
         on of them
     """
-    if (env_vars.lost_criteria == "CrossEntropyLoss"):
+    if (criteria == "CrossEntropyLoss"):
         return nn.CrossEntropyLoss()
-    elif (env_vars.lost_criteria == "BCELoss"):
+    elif (criteria == "BCELoss"):
         return nn.BCELoss()
 
 
@@ -159,7 +159,7 @@ def save_arch(arch, timestamp):
     dataset = env_vars.dataset
     iterations = env_vars.iterations
 
-    results = env_vars.results_path
+    results = env_vars.models_path
     create_dir(results)
 
     file_name = f"{timestamp}_arch-{net}_{dataset}_iter-{iterations}"
@@ -198,7 +198,10 @@ def get_model_to_use():
 
         model_name = extract_file_name_data(
             available_models[selected_model_index], "arch-", "_")
-        return selected_model_path, model_name
+
+        model_identifier = extract_file_name_data(
+            available_models[selected_model_index], "", "_arch")
+        return selected_model_path, model_name, model_identifier
     else:
         dir_error = f"[ERROR]: Directory {models_path} does not exist"
         raise Exception(dir_error)
@@ -211,7 +214,7 @@ def use_model():
     Returns:
         model (Object): A instance of a pre-trained model
     """
-    models_path, model_name = get_model_to_use()
+    models_path, model_name, model_identifier = get_model_to_use()
     loaded_state_model = load(models_path, map_location=device(get_device()))
 
     architecture = get_architecture(model_name)
@@ -219,4 +222,4 @@ def use_model():
 
     model.load_state_dict(loaded_state_model)
 
-    return model, model_name
+    return model, model_name, model_identifier
