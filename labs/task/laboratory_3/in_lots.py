@@ -1,8 +1,16 @@
 import subprocess
 import platform
 
+from lots.training import training_combinations
+
 
 def update_env_parameters(parameters):
+    """
+    Updates .env file with the corresponding parameters
+
+    Args:
+        - parameters (Dict): A dictionary of permutations for .env file
+    """
     # Read the content of the .env file
     env_file_path = ".env"
     with open(env_file_path, 'r') as file:
@@ -19,44 +27,23 @@ def update_env_parameters(parameters):
         file.writelines(lines)
 
 
-parameter_combinations = [
-    {"NET_ARCH": "AlexNet", "ITERATIONS": "1", "LEARNING_RATE": "0.01"},
-    {"NET_ARCH": "AlexNet", "ITERATIONS": "5", "LEARNING_RATE": "0.01"},
-    {"NET_ARCH": "AlexNet", "ITERATIONS": "10", "LEARNING_RATE": "0.01"},
-    {"NET_ARCH": "AlexNet", "ITERATIONS": "1", "LEARNING_RATE": "0.03"},
-    {"NET_ARCH": "AlexNet", "ITERATIONS": "5", "LEARNING_RATE": "0.03"},
-    {"NET_ARCH": "AlexNet", "ITERATIONS": "10", "LEARNING_RATE": "0.03"},
+def init_env():
+    """
+    Initialize a virtual environment depending on current OS
+    """
+    os_name = platform.system()
 
-    {"NET_ARCH": "VGG16", "ITERATIONS": "1", "LEARNING_RATE": "0.01"},
-    {"NET_ARCH": "VGG16", "ITERATIONS": "5", "LEARNING_RATE": "0.01"},
-    {"NET_ARCH": "VGG16", "ITERATIONS": "10", "LEARNING_RATE": "0.01"},
-    {"NET_ARCH": "VGG16", "ITERATIONS": "1", "LEARNING_RATE": "0.03"},
-    {"NET_ARCH": "VGG16", "ITERATIONS": "5", "LEARNING_RATE": "0.03"},
-    {"NET_ARCH": "VGG16", "ITERATIONS": "10", "LEARNING_RATE": "0.03"},
-
-    {"NET_ARCH": "VGG19", "ITERATIONS": "1", "LEARNING_RATE": "0.01"},
-    {"NET_ARCH": "VGG19", "ITERATIONS": "5", "LEARNING_RATE": "0.01"},
-    {"NET_ARCH": "VGG19", "ITERATIONS": "10", "LEARNING_RATE": "0.01"},
-    {"NET_ARCH": "VGG19", "ITERATIONS": "1", "LEARNING_RATE": "0.03"},
-    {"NET_ARCH": "VGG19", "ITERATIONS": "5", "LEARNING_RATE": "0.03"},
-    {"NET_ARCH": "VGG19", "ITERATIONS": "10", "LEARNING_RATE": "0.03"},
-
-    {"NET_ARCH": "AlexNet", "ITERATIONS": "100", "LEARNING_RATE": "0.03"},
-    {"NET_ARCH": "VGG16", "ITERATIONS": "100", "LEARNING_RATE": "0.03"},
-    {"NET_ARCH": "VGG19", "ITERATIONS": "100", "LEARNING_RATE": "0.03"},
-]
+    if os_name == "Windows":
+        activate_cmd = "/env/Scripts/activate"
+        subprocess.call(activate_cmd, shell=True)
+    else:
+        activate_cmd = "source env/bin/activate"
+        subprocess.call(activate_cmd, shell=True)
 
 
-os_name = platform.system()
+init_env()
 
-if os_name == "Windows":
-    activate_cmd = "/env/Scripts/activate"
-    subprocess.call(activate_cmd, shell=True)
-else:
-    activate_cmd = "source env/bin/activate"
-    subprocess.call(activate_cmd, shell=True)
-
-# Update parameters for each combination and call main.py
+parameter_combinations = training_combinations
 for parameters in parameter_combinations:
     update_env_parameters(parameters)
 
