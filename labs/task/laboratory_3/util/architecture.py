@@ -175,7 +175,7 @@ def get_model_to_use():
     Create a path for a selected (By the console) model under ".pth" format
 
     Returns:
-        A path for a model to use also the model's name according to its file
+        A path to chosen model also it's index
     """
     models_path = env_vars.models_path
 
@@ -193,30 +193,54 @@ def get_model_to_use():
         selected_model_index = int(
             input("Select a model (enter the corresponding number): ")) - 1
 
-        selected_model_path = get_current_path(
-            f"{models_path}" +
-            f"/{available_models[selected_model_index]}")
-
-        model_name = extract_file_name_data(
-            available_models[selected_model_index], "arch-", "_")
-
-        model_identifier = extract_file_name_data(
-            available_models[selected_model_index], "", "_arch")
-
-        return selected_model_path, model_name, model_identifier
+        return available_models, selected_model_index
     else:
         dir_error = f"[ERROR]: Directory {models_path} does not exist"
         raise Exception(dir_error)
 
 
-def use_model():
+def extract_model_data(available_models, selected_model_index):
+    """
+    Extracts information from a model to get its path, its name and its id
+
+    Args:
+        available_models (Array): A list of all found models at some directory
+        selected_model_index (int): A number that represents chosen model id
+
+    Returns:
+        selected_model_path (str): Specific path to the choose model
+        model_name (str): Architecture name
+        model_identifier (str): Identifier as time stamp
+    """
+    models_path = env_vars.models_path
+
+    selected_model_path = get_current_path(
+        f"{models_path}" +
+        f"/{available_models[selected_model_index]}")
+
+    model_name = extract_file_name_data(
+        available_models[selected_model_index], "arch-", "_")
+
+    model_identifier = extract_file_name_data(
+        available_models[selected_model_index], "", "_arch")
+
+    return selected_model_path, model_name, model_identifier
+
+
+def use_model(models_path, model_name, model_identifier):
     """
     Loads a model mapping it to an instance
 
+    Args:
+        selected_model_path (str): Specific path to the choose model
+        model_name (str): Architecture name
+        model_identifier (str): Identifier as time stamp
+
     Returns:
         model (Object): A instance of a pre-trained model
+        model_name (Str): Model's name
+        model_identifier (Str): A time stamp used as id
     """
-    models_path, model_name, model_identifier = get_model_to_use()
     loaded_state_model = load(models_path, map_location=device(get_device()))
 
     architecture = get_architecture(model_name)
@@ -225,3 +249,13 @@ def use_model():
     model.load_state_dict(loaded_state_model)
 
     return model, model_name, model_name + model_identifier
+
+
+def get_single_model():
+    """
+    Creates a sample of a model
+    """
+    available, index = get_model_to_use()
+    path, name, identifier = extract_model_data(available, index)
+
+    return use_model(path, name, identifier)
