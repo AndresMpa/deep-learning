@@ -2,6 +2,7 @@ import subprocess
 import platform
 
 from lots.training import training_combinations
+from util.dirs import get_current_path
 
 
 def update_env_parameters(parameters):
@@ -27,24 +28,26 @@ def update_env_parameters(parameters):
         file.writelines(lines)
 
 
-def init_env():
+# TODO: Check this
+def initialize_env():
     """
     Initialize a virtual environment depending on current OS
     """
+    env = get_current_path("env")
     os_name = platform.system()
 
     if os_name == "Windows":
-        activate_cmd = "/env/Scripts/activate"
-        subprocess.call(activate_cmd, shell=True)
-    else:
-        activate_cmd = "source env/bin/activate"
+        activate_cmd = f"{env}/Scripts/activate"
         subprocess.call(activate_cmd, shell=True)
 
 
-init_env()
+initialize_env()
+update_env_parameters({"USE_MODEL": "0"})
 
 parameter_combinations = training_combinations
+os_name = platform.system()
+
 for parameters in parameter_combinations:
     update_env_parameters(parameters)
 
-    subprocess.call(["python", "main.py"], shell=True)
+    subprocess.call(["python", "main.py"], shell=(os_name == "Windows"))
