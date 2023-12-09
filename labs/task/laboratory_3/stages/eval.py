@@ -1,11 +1,13 @@
 import time
-
-import torch
 import numpy as np
-import matplotlib.pyplot as plt
+
+from torch import no_grad, max
 
 from util.dataset import create_dataset
-from util.architecture import use_model, create_device, create_transform
+
+from util.architecture import use_model, create_device, create_transform, get_loss_function
+
+from util.draw import draw_error, draw_confusion_matrix
 
 from util.logger import create_log_entry, send_message_to_os
 
@@ -16,11 +18,13 @@ def execute_eval():
     """
     Model definition
     """
-    model, model_name = use_model()
+    model, model_name, identifier = use_model()
+    lost_criteria = get_loss_function(model_name)
     transform = create_transform(model_name)
     device = create_device()
+    model.to(device)
 
-    print("Using model architecture:")
+    print(f"Using model ({identifier}) architecture:")
     print(model)
 
     """
@@ -36,16 +40,22 @@ def execute_eval():
 
     total = 0
     correct = 0
+    total_loss = 0.0
+    eval_losses = [] 
     true_labels = []
     predicted_labels = []
 
-    with torch.no_grad():
+    with no_grad():
         for batch_idx, (input, target) in enumerate(testloader):
             input, target = input.to(device), target.to(device)
 
             outputs = model(input)
 
-            _, predicted = torch.max(outputs.data, 1)
+            loss = lost_criteria(outputs, target)
+            total_loss += loss.item()
+            eval_losses.append(loss.item())
+
+            _, predicted = max(outputs.data, 1)
             total += target.size(0)
             correct += (predicted == target).sum().item()
 
@@ -56,24 +66,28 @@ def execute_eval():
             if batch_idx % 10 == 0:
                 batch = f"Batch [{batch_idx}/{len(testloader)}]"
                 accuracy = f"Accuracy: {correct / total * 100:.2f}%"
-                print(f"{batch}: {accuracy}")
+                batch_loss = f"Batch Loss: {total_loss / (batch_idx + 1):.4f}"
+                print(f"{batch} - {accuracy} {batch_loss}")
 
     # Print overall accuracy
     accuracy = correct / total
+    overall_loss = total_loss / len(testloader)
     print(f"Accuracy on the sample dataset: {accuracy * 100:.2f}%")
+    print(f"Overall Loss: {overall_loss:.4f}")
 
     """
     Measuring time
     """
     end_time = time.time()
     elapsed_time = (end_time - start_time) / 60.0
-    print(f"Took: {elapsed_time:0.2f} minutes")
+    print(f"Model {identifier} took: {elapsed_time:0.2f} minutes")
 
     timestamp = time.time()
 
     """
     Metrics
     """
+
     conf_matrix = np.zeros(
         (len(class_names), len(class_names)), dtype=np.int64)
 
@@ -83,28 +97,14 @@ def execute_eval():
     """
     Plotting
     """
-    fig, ax = plt.subplots()
-    cax = ax.matshow(conf_matrix, cmap=plt.cm.Blues)
-    fig.colorbar(cax)
+    draw_confusion_matrix(conf_matrix, class_names, model_name, identifier)
 
-    ax.set_xticks(np.arange(len(class_names)))
-    ax.set_yticks(np.arange(len(class_names)))
-
-    ax.set_xticklabels(class_names, rotation=45, ha="right")
-    ax.set_yticklabels(class_names, rotation=45, ha="right")
-
-    ax.xaxis.set_label_position('bottom')
-    ax.xaxis.tick_bottom()
-
-    plt.ylabel('Classes')
-    plt.title(f"{model_name} confusion matrix")
-    plt.savefig(f"{model_name}_confusion_matrix.png")
-    plt.close()
+    draw_error(eval_losses, identifier)
 
     '''
     Logs
     '''
-    create_log_entry(timestamp, elapsed_time)
+    create_log_entry(timestamp, elapsed_time, model_name)
     send_message_to_os(
         f"Process ended; took {elapsed_time} minutes",
         f"{model_name}"
