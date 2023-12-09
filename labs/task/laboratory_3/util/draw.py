@@ -54,6 +54,7 @@ def draw_error(error, timestamp):
     plt.savefig(file_path)
     plt.clf()
 
+
 def draw_confusion_matrix(conf_matrix, class_names, model_name, identifier):
     fig, ax = plt.subplots()
     cax = ax.matshow(conf_matrix, cmap=plt.cm.Blues)
