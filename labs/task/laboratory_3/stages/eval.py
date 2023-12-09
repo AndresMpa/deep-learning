@@ -5,8 +5,8 @@ from torch import no_grad, max
 
 from util.dataset import create_dataset
 
+from util.architecture import get_single_model, get_loss_function
 from util.architecture import create_device, create_transform
-from util.architecture import use_model, get_loss_function
 
 from util.draw import draw_error, draw_confusion_matrix
 
@@ -19,9 +19,9 @@ def execute_eval():
     """
     Model definition
     """
-    model, model_name, identifier = use_model()
-    lost_criteria = get_loss_function(model_name)
+    model, model_name, identifier = get_single_model()
     transform = create_transform(model_name)
+    lost_criteria = get_loss_function()
     device = create_device()
     model.to(device)
 
