@@ -222,4 +222,4 @@ def use_model():
 
     model.load_state_dict(loaded_state_model)
 
-    return model, model_name, model_identifier
+    return model, model_name, model_name + model_identifier
