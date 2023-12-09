@@ -45,8 +45,11 @@ parameter_combinations = [
     {"NET_ARCH": "VGG19", "ITERATIONS": "100", "LEARNING_RATE": "0.03"},
 ]
 
+activate_cmd = "/env/Scripts/activate"
+subprocess.call(activate_cmd, shell=True)
+
 # Update parameters for each combination and call main.py
 for parameters in parameter_combinations:
     update_env_parameters(parameters)
 
-    subprocess.call(["python", "main.py"])
+    subprocess.call(["python", "main.py"], shell=True)
