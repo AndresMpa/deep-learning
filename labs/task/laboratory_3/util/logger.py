@@ -42,13 +42,13 @@ def create_log_file(log_file_path):
         "Iterations",
         "Learning rate",
         "Momentum",
-        "Log date"
+        "Log date",
         "Took (min)",
     ]
     add_entry_to_csv(log_file_path, entry_labels)
 
 
-def create_log_entry(timestamp, elapsed_time):
+def create_log_entry(timestamp, elapsed_time, model_name=env_vars.net_arch):
     """
     Creates an entry in a CSV log file
 
@@ -67,7 +67,7 @@ def create_log_entry(timestamp, elapsed_time):
 
     new_entry = [
         timestamp,
-        env_vars.net_arch,
+        model_name,
         "Using pre-trained" if env_vars.use_model else "Training",
         "GPU" if is_available() else "CPU",
         env_vars.batch_size,
