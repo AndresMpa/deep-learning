@@ -5,7 +5,8 @@ from torch import no_grad, max
 
 from util.dataset import create_dataset
 
-from util.architecture import use_model, create_device, create_transform, get_loss_function
+from util.architecture import create_device, create_transform
+from util.architecture import use_model, get_loss_function
 
 from util.draw import draw_error, draw_confusion_matrix
 
@@ -41,7 +42,7 @@ def execute_eval():
     total = 0
     correct = 0
     total_loss = 0.0
-    eval_losses = [] 
+    eval_losses = []
     true_labels = []
     predicted_labels = []
 

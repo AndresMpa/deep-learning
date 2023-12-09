@@ -185,6 +185,7 @@ def get_model_to_use():
         if len(available_models) == 0:
             file_error = f"[ERROR]: Directory {models_path} is empty"
             raise Exception(file_error)
+
         print("Available Models:")
         for i, model in enumerate(available_models, 1):
             print(f"{i}. {model}")
@@ -201,6 +202,7 @@ def get_model_to_use():
 
         model_identifier = extract_file_name_data(
             available_models[selected_model_index], "", "_arch")
+
         return selected_model_path, model_name, model_identifier
     else:
         dir_error = f"[ERROR]: Directory {models_path} does not exist"
