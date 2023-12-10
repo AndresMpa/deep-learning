@@ -3,25 +3,11 @@
 ## What is this?
 
 You're seeing a computer vision test field, under the presented architecture, you can easily
-try some architecture such as VGGx16 VGGx19 and AlexNet
+try some architecture such as AlexNet, VGGx16, VGGx19 and ResNetx18
 
-### Available dataset
+## Usage
 
-Data sets can be defined inside the .env file in the $DATASET$ variable, available dataset
-work for image detection or segmentation from PyTorch documentation specification follow this
-[link](https://pytorch.org/vision/stable/datasets.html#image-detection-or-segmentation) to see
-other options
-
-| Keyword    | Size | Dataset                                                     |
-| ---------- | ---- | ----------------------------------------------------------- |
-| "CelebA"   | 200K | [CelebA](https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html) |
-| "CIFAR10"  | 60K  | [CIFAR](https://www.cs.toronto.edu/~kriz/cifar.html)        |
-| "CIFAR100" | 60K  | [CIFAR](https://www.cs.toronto.edu/~kriz/cifar.html)        |
-
-> Note: The difference between CIFAR10 and CIFAR100 is the amount of classes, CIFAR10 contains 10
-> while CIFAR100 contains 100 see "The CIFAR-100 dataset" specifications
-
-## To run virtual environments
+### To run virtual environments
 
 #### Windows
 
@@ -42,3 +28,50 @@ source env/bin/activate
 pip install torch torchvision torchaudio
 pip install numpy matplotlib python-dotenv plyer
 ```
+
+### Setting environment
+
+.env file is required to setting the environment of this project, along with the virtual environment
+this file sets each section of the project. Here is a example
+
+```bash
+NET_ARCH=AlexNet
+USE_CUDA=1
+
+MODELS_PATH="models"
+USE_MODEL=1
+
+DATASET="CIFAR10"
+DATA_PATH="./data"
+BATCH_SIZE=8
+
+IMG_SIZE=224
+IMG_START_INDEX=0
+
+ITERATIONS=1
+LEARNING_RATE=0.01
+MOMENTUM_VALUE=0.8
+CATCH_INTERVAL=5
+
+LOST_CRITERIA="CrossEntropyLoss"
+
+RESULTS_PATH="results"
+LOG_PATH="log"
+AUTOCLEAR=0
+```
+
+### Available dataset
+
+Data sets can be defined inside the .env file in the $DATASET$ variable, available dataset
+work for image detection or segmentation from PyTorch documentation specification follow this
+[link](https://pytorch.org/vision/stable/datasets.html#image-detection-or-segmentation) to see
+other options
+
+| Keyword    | Size | Dataset                                                     |
+| ---------- | ---- | ----------------------------------------------------------- |
+| "CelebA"   | 200K | [CelebA](https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html) |
+| "CIFAR10"  | 60K  | [CIFAR](https://www.cs.toronto.edu/~kriz/cifar.html)        |
+| "CIFAR100" | 60K  | [CIFAR](https://www.cs.toronto.edu/~kriz/cifar.html)        |
+
+> Note: The difference between CIFAR10 and CIFAR100 is the amount of classes, CIFAR10 contains 10
+> while CIFAR100 contains 100 see "The CIFAR-100 dataset" specifications
