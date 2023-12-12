@@ -67,6 +67,15 @@ LOG_PATH="log"
 AUTOCLEAR=0
 ```
 
+#### Available architectures
+
+Just write any of the following on the NET_ARCH env var
+
+- AlexNet
+- VGG16
+- VGG19
+- ResNet
+
 ### Available dataset
 
 Data sets can be defined inside the .env file in the $DATASET$ variable, available dataset
