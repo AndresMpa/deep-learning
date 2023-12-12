@@ -35,26 +35,33 @@ pip install numpy matplotlib python-dotenv plyer
 this file sets each section of the project. Here is a example
 
 ```bash
+# Architecture
 NET_ARCH=AlexNet
 USE_CUDA=1
 
+# Using model
 MODELS_PATH="models"
 USE_MODEL=1
 
+# Dataset
 DATASET="CIFAR10"
 DATA_PATH="./data"
 BATCH_SIZE=8
 
+# Image management
 IMG_SIZE=224
 IMG_START_INDEX=0
 
+# Training
 ITERATIONS=1
 LEARNING_RATE=0.01
 MOMENTUM_VALUE=0.8
 CATCH_INTERVAL=5
 
+# Loss
 LOST_CRITERIA="CrossEntropyLoss"
 
+# Management
 RESULTS_PATH="results"
 LOG_PATH="log"
 AUTOCLEAR=0
