@@ -76,6 +76,8 @@ Just write any of the following on the NET_ARCH env var
 - VGG19
 - ResNet
 
+> USE_CUDA=1 means that the host can and will use CUDA by default it uses the processor
+
 ### Available dataset
 
 Data sets can be defined inside the .env file in the $DATASET$ variable, available dataset
