@@ -94,4 +94,4 @@ other options
 > Note: The difference between CIFAR10 and CIFAR100 is the amount of classes, CIFAR10 contains 10
 > while CIFAR100 contains 100 see "The CIFAR-100 dataset" specifications
 
-`LOST_CRITERIA` means the lost function
+`LOST_CRITERIA` means the lost function, available options are "BCELoss" and "CrossEntropyLoss"
